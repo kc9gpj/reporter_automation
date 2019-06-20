@@ -1,19 +1,22 @@
 from bs4 import BeautifulSoup
 import requests
+from datetime import timezone, datetime
 
 def get_data():
     print('called')
     try:
+        dt = datetime.now()
+        current_time = dt.microsecond
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         reception_reports = []
-        for a in soup.find_all('receptionreport'):
-                print('first loop ')
-                reception_reports.append(a)
-                b = a.find_all(attrs={"name" : "flowstartseconds"})
-                print('second loop')
-                print(b)
+        report_time = int(soup.receptionreport["flowstartseconds"])
+        fifteen_minutes = 15 * 60
+        print(current_time - report_time)
+        if (current_time - report_time) < fifteen_minutes:
+            print('less than 15 minutes')
+            
     except Exception as e:
         print(e)
 
