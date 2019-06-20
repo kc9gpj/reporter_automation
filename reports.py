@@ -5,11 +5,15 @@ def get_data():
     print('called')
     try:
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
-        soup = BeautifulSoup(r.content)
-        for a in soup.find_all('receptionreports'):
-            # flowstartseconds
-            print(a)
-                    
+        print(r.status_code)
+        soup = BeautifulSoup(r.content, features="html.parser")
+        reception_reports = []
+        for a in soup.find_all('receptionreport'):
+                print('first loop ')
+                reception_reports.append(a)
+                b = a.find_all(attrs={"name" : "flowstartseconds"})
+                print('second loop')
+                print(b)
     except Exception as e:
         print(e)
 
@@ -40,7 +44,7 @@ get_data()
 #         send_mail(
 #             'Doman/SSL Expirations',
 #             'Here is the message.',
-#             'no-reply@big6media.com',
+#             'n@big6media.com',
 #             [settings.EXPIRE_NOTIFICATION_EMAILS],
 #             html_message='<div style="font-size: 20px;">Domains Expiring Within 30 Days: </div>'
 #             + '<div>'
