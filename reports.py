@@ -6,13 +6,16 @@ def get_data():
     print('called')
     try:
         dt = datetime.now()
-        current_time = dt.microsecond
+        current_time = int(datetime.now(tz=timezone.utc).timestamp())
+        print(current_time)
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         reception_reports = []
-        report_time = int(soup.receptionreport["flowstartseconds"])
-        fifteen_minutes = 15 * 60
+        report_time = int(soup.receptionreport["flowstartseconds"]) / 1000
+        print(report_time)
+        fifteen_minutes = 15 * 60 * 1000
+        print(fifteen_minutes)
         print(current_time - report_time)
         if (current_time - report_time) < fifteen_minutes:
             print('less than 15 minutes')
