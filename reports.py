@@ -1,59 +1,63 @@
 from bs4 import BeautifulSoup
 import requests
+import time
 from datetime import timezone, datetime
+import smtplib
+
+def send_email():
+    from_my = 'projectemail1212@yahoo.com' 
+    to  = 'kc9gpj12@gmail.com'
+    subj= 'Recent Reception'
+    date= datetime.now()
+    message_text= 'You have received a signal within the last 15 mintues.'
+
+    msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
+
+    username = str('projectemail1212@yahoo.com')  
+    password = str('1111asdf')  
+
+    try :
+        print('connecting')
+        server = smtplib.SMTP("smtp.mail.yahoo.com", 587, timeout=10)
+        server.starttls()
+        server.ehlo
+        print('login')
+        server.login(username,password)
+        print('send email')
+        server.sendmail(from_my, to, msg)
+        server.quit()    
+        print('ok the email has sent')
+        time.sleep(900)
+        get_data()
+    except Exception as e:
+        print('can\'t send the Email')
+        print(e)
+        time.sleep(900)
+        get_data()
+
 
 def get_data():
     print('called')
     try:
-        dt = datetime.now()
-        current_time = int(datetime.now(tz=timezone.utc).timestamp())
+        current_time = datetime.now()
         print(current_time)
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
-        reception_reports = []
-        report_time = int(soup.receptionreport["flowstartseconds"]) / 1000
+        report_time = int(soup.receptionreport["flowstartseconds"])
+        report = datetime.fromtimestamp(report_time)
         print(report_time)
-        fifteen_minutes = 15 * 60 * 1000
-        print(fifteen_minutes)
-        print(current_time - report_time)
-        if (current_time - report_time) < fifteen_minutes:
+        difference = (current_time - report).seconds
+        if difference < 900:
             print('less than 15 minutes')
+            send_email()
+        else:
+            time.sleep(900)
+            get_data()
             
     except Exception as e:
         print(e)
+        time.sleep(900)
+        get_data()
 
 get_data()
-
-# def send_expiring_domain_email(task):
-#     domain_list = []
-#     cert_list = []
-#     with logger.task_logger(task=task):
-#         two_weeks_from_now = datetime.today() + timedelta(days=14)
-#         thirty_days_from_now = datetime.today() + timedelta(days=30)
-#         domain = WebsiteDomain.objects.filter()
-#         for d in domain.all():
-#             if d.domain_expire_date is not None:
-#                 if d.domain_expire_date.date() < thirty_days_from_now.date():
-#                     domain_list.append("https://bowser.legalfit.io/websites/{}/info".format(d.website.key))
-#                     domain_list.append(d.domain)
-#                     domain_list.append(d.domain_expire_date.strftime("%B %d, %Y"))
-
-#         for d in domain.all():
-#             if d.ssl_expire_date is not None:
-#                 if d.ssl_expire_date.date() < two_weeks_from_now.date():
-#                     cert_list.append("https://bowser.legalfit.io/websites/{}/info".format(d.website.key))
-#                     cert_list.append(d.domain)
-#                     cert_list.append(d.ssl_expire_date.strftime("%B %d, %Y"))
-
-#     try:
-#         send_mail(
-#             'Doman/SSL Expirations',
-#             'Here is the message.',
-#             'n@big6media.com',
-#             [settings.EXPIRE_NOTIFICATION_EMAILS],
-#             html_message='<div style="font-size: 20px;">Domains Expiring Within 30 Days: </div>'
-#             + '<div>'
-#             + str("<br> ".join(domain_list)) + '<div style="font-size: 20px;">Certificates Expiring Within 14 Days: </div>'
-#             + str("<br> ".join(cert_list)),
-#         )
