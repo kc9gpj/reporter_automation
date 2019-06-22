@@ -51,7 +51,7 @@ def get_data():
         print(report_time)
         difference = (current_time - report).seconds
         if difference < time_delay:
-            print('less than 15 minutes')
+            print('less than 30 minutes')
             send_email()
         else:
             print('no reports')
