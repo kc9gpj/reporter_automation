@@ -47,10 +47,12 @@ def get_data():
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         report_time = int(soup.receptionreport["flowstartseconds"])
+        band = int(soup.receptionreport["frequency"])
         report = datetime.fromtimestamp(report_time)
+        print(band)
         print(report_time)
         difference = (current_time - report).seconds
-        if difference < time_delay:
+        if difference < time_delay and band >= 50312000 and band >= 50316000:
             print('less than 30 minutes')
             send_email()
         else:
