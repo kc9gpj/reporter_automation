@@ -4,12 +4,14 @@ import time
 from datetime import timezone, datetime
 import smtplib
 
+time_delay = 1800
+
 def send_email():
     from_my = 'projectemail1212@yahoo.com' 
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
-    message_text= 'You have received a signal within the last 15 mintues.'
+    message_text= 'You have received a signal within the last 30 mintues.'
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
@@ -27,12 +29,12 @@ def send_email():
         server.sendmail(from_my, to, msg)
         server.quit()    
         print('ok the email has sent')
-        time.sleep(900)
+        time.sleep(time_delay)
         get_data()
     except Exception as e:
         print('can\'t send the Email')
         print(e)
-        time.sleep(900)
+        time.sleep(time_delay)
         get_data()
 
 
@@ -48,17 +50,17 @@ def get_data():
         report = datetime.fromtimestamp(report_time)
         print(report_time)
         difference = (current_time - report).seconds
-        if difference < 900:
+        if difference < time_delay:
             print('less than 15 minutes')
             send_email()
         else:
             print('no reports')
-            time.sleep(900)
+            time.sleep(time_delay)
             get_data()
             
     except Exception as e:
         print(e)
-        time.sleep(900)
+        time.sleep(time_delay)
         get_data()
 
 get_data()
