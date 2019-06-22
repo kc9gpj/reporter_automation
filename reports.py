@@ -52,6 +52,7 @@ def get_data():
             print('less than 15 minutes')
             send_email()
         else:
+            print('no reports')
             time.sleep(900)
             get_data()
             
