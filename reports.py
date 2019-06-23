@@ -4,14 +4,14 @@ import time
 from datetime import timezone, datetime
 import smtplib
 
-time_delay = 1800
+time_delay = 900
 
-def send_email():
+def send_email(frequency, count):
     from_my = 'projectemail1212@yahoo.com' 
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
-    message_text= 'You have received a signal within the last 30 mintues.'
+    message_text= '{} is bitchin right now. Within the past {} minutes. There have been {} signals received.'.format(frequency, time_delay/60, count)
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
@@ -41,22 +41,28 @@ def send_email():
 def get_data():
     print('called')
     try:
+        all_reports = []
         current_time = datetime.now()
-        print(current_time)
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
-        report_time = int(soup.receptionreport["flowstartseconds"])
-        report = datetime.fromtimestamp(report_time)
-        print(report_time)
-        difference = (current_time - report).seconds
-        if difference < time_delay:
-            print('less than 30 minutes')
-            send_email()
+        frequency = int(soup.receptionreport["frequency"])
+        for link in soup.find_all('receptionreport'):
+            report_times = link.get('flowstartseconds')
+            report = datetime.fromtimestamp(int(report_times))
+            difference = (current_time - report).seconds
+            if difference < time_delay:
+                all_reports.append(report_times)
+        count = len(all_reports)
+        print(count)
+        if count >= 5:
+            print('pass to email')
+            send_email(frequency, count)
         else:
-            print('no reports')
+            print('no email to send')
             time.sleep(time_delay)
             get_data()
+        
             
     except Exception as e:
         print(e)
