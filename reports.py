@@ -49,14 +49,16 @@ def get_data():
         frequency = int(soup.receptionreport["frequency"])
         if 50313000 <= frequency <= 50316000:
             band = 6
-        if 18100000 <= frequency <= 18100300:
+        elif 18100000 <= frequency <= 18100300:
             band = 17
-        if 14074000 <= frequency <= 14077000:
+        elif 14074000 <= frequency <= 14077000:
             band = 20
-        if 10136000 <= frequency <= 10139000:
+        elif 10136000 <= frequency <= 10139000:
             band = 30
-        if 7074000 <= frequency <= 7077000:
+        elif 7074000 <= frequency <= 7077000:
             band = 40
+        else:
+            band = 0
         print(band)
         for link in soup.find_all('receptionreport'):
             report_times = link.get('flowstartseconds')
@@ -66,35 +68,22 @@ def get_data():
                 all_reports.append(report_times)
         count = len(all_reports)
         print(count)
-        if count >= 1 and band == 6:
+        if count >= 5 and band == 6:
             print('pass to email')
             send_email(band, count,)
-        else:
-            print('no email to send')
-            time.sleep(time_delay)
-            get_data()
-        if count >= 5 and band == 17:
+        elif count >= 5 and band == 17:
             print('pass to email')
             send_email(band, count)
-        else:
-            print('no email to send')
-            time.sleep(time_delay)
-            get_data()
-        if count >= 20 and band == 20:
+        elif count >= 5 and band == 17:
             print('pass to email')
             send_email(band, count)
-        else:
-            print('no email to send')
-            time.sleep(time_delay)
-            get_data()
-        if count >= 10 and band == 30:
+        elif count >= 20 and band == 20:
             print('pass to email')
             send_email(band, count)
-        else:
-            print('no email to send')
-            time.sleep(time_delay)
-            get_data()
-        if count >= 20 and band == 40:
+        elif count >= 10 and band == 30:
+            print('pass to email')
+            send_email(band, count)
+        elif count >= 20 and band == 40:
             print('pass to email')
             send_email(band, count)
         else:
