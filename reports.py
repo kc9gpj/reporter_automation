@@ -6,12 +6,12 @@ import smtplib
 
 time_delay = 900
 
-def send_email(frequency, count):
+def send_email(band, count):
     from_my = 'projectemail1212@yahoo.com' 
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
-    message_text= '{} is bitchin right now. Within the past {} minutes. There have been {} signals received.'.format(frequency, time_delay/60, count)
+    message_text= '{} meters is bitchin right now. Within the past {} minutes. There have been {} signals received.'.format(band, int(time_delay/60), count)
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
@@ -47,6 +47,17 @@ def get_data():
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         frequency = int(soup.receptionreport["frequency"])
+        if 50313000 <= frequency <= 50316000:
+            band = 6
+        if 18100000 <= frequency <= 18100300:
+            band = 17
+        if 14074000 <= frequency <= 14077000:
+            band = 20
+        if 10136000 <= frequency <= 10139000:
+            band = 30
+        if 7074000 <= frequency <= 7077000:
+            band = 40
+        print(band)
         for link in soup.find_all('receptionreport'):
             report_times = link.get('flowstartseconds')
             report = datetime.fromtimestamp(int(report_times))
@@ -55,9 +66,37 @@ def get_data():
                 all_reports.append(report_times)
         count = len(all_reports)
         print(count)
-        if count >= 5:
+        if count >= 1 and band == 6:
             print('pass to email')
-            send_email(frequency, count)
+            send_email(band, count,)
+        else:
+            print('no email to send')
+            time.sleep(time_delay)
+            get_data()
+        if count >= 5 and band == 17:
+            print('pass to email')
+            send_email(band, count)
+        else:
+            print('no email to send')
+            time.sleep(time_delay)
+            get_data()
+        if count >= 20 and band == 20:
+            print('pass to email')
+            send_email(band, count)
+        else:
+            print('no email to send')
+            time.sleep(time_delay)
+            get_data()
+        if count >= 10 and band == 30:
+            print('pass to email')
+            send_email(band, count)
+        else:
+            print('no email to send')
+            time.sleep(time_delay)
+            get_data()
+        if count >= 20 and band == 40:
+            print('pass to email')
+            send_email(band, count)
         else:
             print('no email to send')
             time.sleep(time_delay)
