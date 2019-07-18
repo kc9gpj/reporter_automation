@@ -7,7 +7,7 @@ import smtplib
 time_delay = 900
 
 def send_email(band, count):
-    from_my = 'projectemail1212@yahoo.com' 
+    from_my = 'projectemail1212@yahoo.com'
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
@@ -15,8 +15,8 @@ def send_email(band, count):
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
-    username = str('projectemail1212@yahoo.com')  
-    password = str('1111asdf')  
+    username = str('projectemail1212@yahoo.com')
+    password = str('1111asdf')
 
     try :
         print('connecting')
@@ -27,7 +27,7 @@ def send_email(band, count):
         server.login(username,password)
         print('send email')
         server.sendmail(from_my, to, msg)
-        server.quit()    
+        server.quit()
         print('ok the email has sent')
         time.sleep(time_delay)
         get_data()
@@ -47,6 +47,8 @@ def get_data():
         print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         frequency = int(soup.receptionreport["frequency"])
+        if 144000000 <= frequency <= 144300000:
+            band = 2
         if 50313000 <= frequency <= 50316000:
             band = 6
         elif 18100000 <= frequency <= 18100300:
@@ -68,7 +70,10 @@ def get_data():
                 all_reports.append(report_times)
         count = len(all_reports)
         print(count)
-        if count >= 5 and band == 6:
+        if count >= 1 and band == 2:
+            print('pass to email')
+            send_email(band, count,)
+        elif count >= 5 and band == 6:
             print('pass to email')
             send_email(band, count,)
         elif count >= 5 and band == 17:
@@ -90,8 +95,7 @@ def get_data():
             print('no email to send')
             time.sleep(time_delay)
             get_data()
-        
-            
+
     except Exception as e:
         print(e)
         time.sleep(time_delay)
