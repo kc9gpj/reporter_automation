@@ -45,7 +45,6 @@ def get_data():
         dx = []
         current_time = datetime.now()
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
-        print(r.status_code)
         soup = BeautifulSoup(r.content, features="html.parser")
         frequency = int(soup.receptionreport["frequency"])
         if 144000000 <= frequency <= 144300000:
