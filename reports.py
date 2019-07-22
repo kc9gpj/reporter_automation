@@ -6,12 +6,12 @@ import smtplib
 
 time_delay = 900
 
-def send_email(band, count):
+def send_email(band, count, dx):
     from_my = 'projectemail1212@yahoo.com'
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
-    message_text= '{} meters is bitchin right now. Within the past {} minutes. There have been {} signals received.'.format(band, int(time_delay/60), count)
+    message_text= 'On {} meters, Within the past {} minutes. There have been {} signals received. DX: {}'.format(band, int(time_delay/60), count, dx)
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
@@ -42,6 +42,7 @@ def get_data():
     print('called')
     try:
         all_reports = []
+        dx = []
         current_time = datetime.now()
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         print(r.status_code)
@@ -61,36 +62,40 @@ def get_data():
             band = 40
         else:
             band = 0
-        print(band)
         for link in soup.find_all('receptionreport'):
+            print(link)
             report_times = link.get('flowstartseconds')
+            dxcc = link.get('senderdxcc')
+            print(dxcc)
             report = datetime.fromtimestamp(int(report_times))
             difference = (current_time - report).seconds
             if difference < time_delay:
                 all_reports.append(report_times)
+            if dxcc != 'United States':
+                dx.append(dxcc)
         count = len(all_reports)
         print(count)
         if count >= 1 and band == 2:
             print('pass to email')
-            send_email(band, count,)
+            send_email(band, count, dx)
         elif count >= 5 and band == 6:
             print('pass to email')
-            send_email(band, count,)
-        elif count >= 5 and band == 17:
+            send_email(band, count, dx)
+        elif dx and band == 17:
             print('pass to email')
-            send_email(band, count)
-        elif count >= 5 and band == 17:
+            send_email(band, count, dx)
+        elif dx and band == 17:
             print('pass to email')
-            send_email(band, count)
-        elif count >= 20 and band == 20:
+            send_email(band, count, dx)
+        elif dx and band == 20:
             print('pass to email')
-            send_email(band, count)
-        elif count >= 10 and band == 30:
+            send_email(band, count, dx)
+        elif dx and band == 30:
             print('pass to email')
-            send_email(band, count)
-        elif count >= 20 and band == 40:
+            send_email(band, count, dx)
+        elif dx and band == 40:
             print('pass to email')
-            send_email(band, count)
+            send_email(band, count, dx)
         else:
             print('no email to send')
             time.sleep(time_delay)
