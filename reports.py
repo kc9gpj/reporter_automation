@@ -70,7 +70,7 @@ def get_data():
             difference = (current_time - report).seconds
             if difference < time_delay:
                 all_reports.append(report_times)
-            if dxcc != 'United States':
+            if dxcc != 'United States' and difference < time_delay :
                 if dxcc != 'Mexico':
                     if dxcc != 'Canada':
                         dx.append(dxcc)
