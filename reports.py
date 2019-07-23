@@ -43,6 +43,7 @@ def get_data():
     try:
         all_reports = []
         dx = []
+        ignore_list = ['United States', 'Canada', 'Mexico', 'Cuba', 'Puerto Rico', 'Bahamas']
         current_time = datetime.now()
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         soup = BeautifulSoup(r.content, features="html.parser")
@@ -70,10 +71,8 @@ def get_data():
             difference = (current_time - report).seconds
             if difference < time_delay:
                 all_reports.append(report_times)
-            if dxcc != 'United States' and difference < time_delay :
-                if dxcc != 'Mexico':
-                    if dxcc != 'Canada':
-                        dx.append(dxcc)
+            if dxcc not in ignore_list and difference < time_delay:
+                dx.append(dxcc)
         count = len(all_reports)
         print(count)
         print(dx)
