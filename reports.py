@@ -11,7 +11,7 @@ def send_email(band, count, dx):
     to  = 'kc9gpj12@gmail.com'
     subj= 'Recent Reception'
     date= datetime.now()
-    message_text= '{} meters, {} signals, within {} minutes. DX: {}'.format(band, int(time_delay/60), count, dx)
+    message_text= '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
