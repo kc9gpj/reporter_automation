@@ -43,7 +43,12 @@ def get_data():
     try:
         all_reports = []
         dx = []
-        ignore_list = ['United States', 'Canada', 'Mexico', 'Cuba', 'Puerto Rico', 'Bahamas']
+        ignore_list = ['United States', 'Canada', 'Mexico', 'Cuba', 'Puerto Rico', 'Bahamas',
+                        'Aruba', 'Barbados', 'Cayman Islands', 'Dominica', 'Dominican Republic',
+                        'Grenada', 'Guadeloupe', 'Haiti', 'Jamaica', 'Martinique', 'Saint Barthelemy',
+                        'St. Kitts & Nevis', 'Antigua & Barbuda', 'St. Lucia','Trinidad & Tobago', 
+                        'Turks & Caicos Islands', 'Virgin Islands', 'Belize', 'Costa Rica', 'El Salvador',
+                        'Guatemala', 'Honduras', 'Nicaragua', 'Panama', 'St. Vincent and the Grenadines']
         current_time = datetime.now()
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         soup = BeautifulSoup(r.content, features="html.parser")
