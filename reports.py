@@ -4,6 +4,8 @@ import time
 from datetime import timezone, datetime
 import smtplib
 
+time_delay = 900
+
 def send_email(band, count, dx):
     from_my = 'projectemail1212@yahoo.com'
     to  = 'kc9gpj12@gmail.com'
