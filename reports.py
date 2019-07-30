@@ -30,12 +30,9 @@ def send_email(band, count, dx):
         server.quit()
         print('ok the email has sent')
         time.sleep(time_delay)
-        get_data()
     except Exception as e:
         print('can\'t send the Email')
         print(e)
-        time.sleep(time_delay)
-        get_data()
 
 
 def get_data():
@@ -104,12 +101,8 @@ def get_data():
             send_email(band, count, dx)
         else:
             print('no email to send')
-            time.sleep(time_delay)
-            get_data()
 
     except Exception as e:
         print(e)
-        time.sleep(time_delay)
-        get_data()
 
 get_data()
