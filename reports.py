@@ -4,8 +4,6 @@ import time
 from datetime import timezone, datetime
 import smtplib
 
-time_delay = 900
-
 def send_email(band, count, dx):
     from_my = 'projectemail1212@yahoo.com'
     to  = 'kc9gpj12@gmail.com'
@@ -29,7 +27,6 @@ def send_email(band, count, dx):
         server.sendmail(from_my, to, msg)
         server.quit()
         print('ok the email has sent')
-        time.sleep(time_delay)
     except Exception as e:
         print('can\'t send the Email')
         print(e)
