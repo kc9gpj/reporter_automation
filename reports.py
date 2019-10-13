@@ -19,13 +19,10 @@ def send_email(band, count, dx):
     password = str('1111asdf')
 
     try:
-        print('connecting')
         server = smtplib.SMTP("smtp.mail.yahoo.com", 587, timeout=10)
         server.starttls()
         server.ehlo
-        print('login')
         server.login(username,password)
-        print('send email')
         server.sendmail(from_my, to, msg)
         server.quit()
         print('ok the email has sent')
@@ -75,28 +72,20 @@ def get_data():
             if dxcc not in ignore_list and difference < time_delay:
                 dx.append(dxcc)
         count = len(all_reports)
-        print(count)
-        print(dx)
-        if count >= 1 and band == 2:
-            print('pass to email')
+        dx_count = len(dx)
+        if dx_count >= 1 and band == 2:
             send_email(band, count, dx)
-        elif count >= 5 and band == 6:
-            print('pass to email')
+        elif dx_count >= 5 and band == 6:
             send_email(band, count, dx)
-        elif count >= 5 and dx and band == 10:
-            print('pass to email')
+        elif dx_count >= 5 and dx and band == 10:
             send_email(band, count, dx)
-        elif count >= 5 and dx and band == 17:
-            print('pass to email')
+        elif dx_count >= 5 and dx and band == 17:
             send_email(band, count, dx)
-        elif count >= 5 and dx and band == 20:
-            print('pass to email')
+        elif dx_count >= 5 and dx and band == 20:
             send_email(band, count, dx)
-        elif count >= 5 and dx and band == 30:
-            print('pass to email')
+        elif dx_count >= 5 and dx and band == 30:
             send_email(band, count, dx)
-        elif count >= 5 and dx and band == 40:
-            print('pass to email')
+        elif dx_count >= 5 and dx and band == 40:
             send_email(band, count, dx)
         else:
             print('no email to send')
