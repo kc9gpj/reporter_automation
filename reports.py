@@ -8,17 +8,17 @@ time_delay = 900
 
 def send_email(band, count, dx):
     from_my = 'projectemail1212@yahoo.com'
-    to  = 'kc9gpj12@gmail.com'
-    subj= 'Recent Reception'
-    date= datetime.now()
-    message_text= '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
+    to = 'kc9gpj12@gmail.com'
+    subj = 'Recent Reception'
+    date = datetime.now()
+    message_text = '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
 
     msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
     username = str('projectemail1212@yahoo.com')
     password = str('1111asdf')
 
-    try :
+    try:
         print('connecting')
         server = smtplib.SMTP("smtp.mail.yahoo.com", 587, timeout=10)
         server.starttls()
@@ -83,19 +83,19 @@ def get_data():
         elif count >= 5 and band == 6:
             print('pass to email')
             send_email(band, count, dx)
-        elif dx and band == 10:
+        elif count >= 5 and dx and band == 10:
             print('pass to email')
             send_email(band, count, dx)
-        elif dx and band == 17:
+        elif count >= 5 and dx and band == 17:
             print('pass to email')
             send_email(band, count, dx)
-        elif dx and band == 20:
+        elif count >= 5 and dx and band == 20:
             print('pass to email')
             send_email(band, count, dx)
-        elif dx and band == 30:
+        elif count >= 5 and dx and band == 30:
             print('pass to email')
             send_email(band, count, dx)
-        elif dx and band == 40:
+        elif count >= 5 and dx and band == 40:
             print('pass to email')
             send_email(band, count, dx)
         else:
