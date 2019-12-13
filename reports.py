@@ -52,7 +52,7 @@ def get_data():
             band = 6
         elif 28073000 <= frequency <= 28078000:
             band = 10
-        elif 18100000 <= frequency <= 18100300:
+        elif 18100000 <= frequency <= 18130000:
             band = 17
         elif 14074000 <= frequency <= 14077000:
             band = 20
