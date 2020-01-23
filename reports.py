@@ -8,7 +8,7 @@ time_delay = 900
 
 def send_email(band, count, dx):
     from_my = 'projectemail1212@yahoo.com'
-    to = 'kc9gpj12@gmail.com'
+    to = 'dave@dhoff.net'
     subj = 'Recent Reception'
     date = datetime.now()
     message_text = '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
