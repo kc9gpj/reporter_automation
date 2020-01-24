@@ -6,29 +6,35 @@ import smtplib
 
 time_delay = 900
 
+
 def send_email(band, count, dx):
-    from_my = 'projectemail1212@yahoo.com'
-    to = 'dave@dhoff.net'
-    subj = 'Recent Reception'
-    date = datetime.now()
-    message_text = '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
+    dx = dx.replace("[", "").replace("]","").replace("'", "")
+    url = "https://api.simplepush.io/send/PXR3ws/{} Meters {} Rec/{}".format(band, count, dx)
+    response = requests.request("GET", url)
+    print(response.text)
 
-    msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
+    # from_my = 'projectemail1212@yahoo.com'
+    # to = 'dave@dhoff.net'
+    # subj = 'Recent Reception'
+    # date = datetime.now()
+    # message_text = '{} meters, {} signals, within {} minutes. DX: {}'.format(band, count, int(time_delay/60), dx)
 
-    username = str('projectemail1212@yahoo.com')
-    password = str('1111asdf')
+    # msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % ( from_my, to, subj, date, message_text )
 
-    try:
-        server = smtplib.SMTP("smtp.mail.yahoo.com", 587, timeout=10)
-        server.starttls()
-        server.ehlo
-        server.login(username,password)
-        server.sendmail(from_my, to, msg)
-        server.quit()
-        print('ok the email has sent')
-    except Exception as e:
-        print('can\'t send the Email')
-        print(e)
+    # username = str('projectemail1212@yahoo.com')
+    # password = str('1111asdf')
+
+    # try:
+    #     server = smtplib.SMTP("smtp.mail.yahoo.com", 587, timeout=10)
+    #     server.starttls()
+    #     server.ehlo
+    #     server.login(username,password)
+    #     server.sendmail(from_my, to, msg)
+    #     server.quit()
+    #     print('ok the email has sent')
+    # except Exception as e:
+    #     print('can\'t send the Email')
+    #     print(e)
 
 
 def get_data():
