@@ -8,7 +8,7 @@ time_delay = 900
 
 
 def send_email(band, count, dx):
-    dx = dx.replace("[", "").replace("]","").replace("'", "")
+    dx = str(dx).replace("[", "").replace("]","").replace("'", "")
     url = "https://api.simplepush.io/send/Ere7WA/{} Meters {} Rec/{}".format(band, count, dx)
     response = requests.request("GET", url)
     print(response.text)
