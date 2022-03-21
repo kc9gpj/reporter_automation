@@ -51,6 +51,7 @@ def get_data():
         current_time = datetime.now()
         r = requests.get('https://retrieve.pskreporter.info/query?receiverCallsign=kc9gpj')
         soup = BeautifulSoup(r.content, features="html.parser")
+        print(soup)
         frequency = int(soup.receptionreport["frequency"])
         if 144000000 <= frequency <= 144300000:
             band = 2
@@ -79,6 +80,8 @@ def get_data():
                 dx.append(dxcc)
         count = len(all_reports)
         dx_count = len(dx)
+        print(all_reports)
+        print(dx)
         if dx_count >= 1 and band == 2:
             send_email(band, count, dx)
         elif dx_count >= 5 and band == 6:
